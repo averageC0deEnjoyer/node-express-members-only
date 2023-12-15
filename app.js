@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-  res.render('index', { title: 'Members Only!' });
+  res.render('index', { title: 'Members Only!', user: req.user });
 });
 
 app.use('/sign-up', signUpRouter);

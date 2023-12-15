@@ -12,6 +12,9 @@ block content
        label(for='password') Password:
        input#password.form-control(type='password', placeholder='your password here' name='password' required='true' value=(undefined===user ? '' : user.password) )
      div.form-group
+       label(for='password-confirmation') Password Confirmation:
+       input#password-confirmation.form-control(type='password', placeholder='retype password here' name='passwordConfirmation' required='true')   
+     div.form-group
        label(for='fullname') Fullname:
        input#fullname.form-control(type='text', placeholder='John Doe' name='fullname' required='true' value=(undefined===user ? '' : user.fullname) )
  

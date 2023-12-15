@@ -11,6 +11,7 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
     trim: true,
     validate: [validateEmail, 'Please fill a valid email address'],
     match: [
@@ -18,7 +19,7 @@ const userSchema = new Schema({
       'Please fill a valid email address',
     ],
   },
-  password: { type: String, required: true, trim: true, minLength: 15 },
+  password: { type: String, required: true, trim: true, minLength: 5 },
   fullname: { type: String, required: true, trim: true, minLength: 2 },
   membershipStatus: { type: Boolean, default: false },
   adminStatus: { type: Boolean, default: false },
