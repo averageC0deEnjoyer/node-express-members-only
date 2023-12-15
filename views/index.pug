@@ -3,13 +3,17 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  a(href='/sign-up') Sign Up Here
-  |   
+  a(href='/create-message') Create Message Here 
+  if !user
+    a(href='/sign-up') Sign Up Here
+    |   
   if !user
     a(href='/log-in') Log In Here
   |
-  if user 
+  if user && user.membershipStatus === false
     a(href='/apply-membership')   Become a Membership
+  if user 
+    a(href='/log-out')   Log Out
   //- ul
   //-   each message in messages
   //-     li= message.title 

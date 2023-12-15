@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const signUpRouter = require('./routes/signUpRouter');
 const logInRouter = require('./routes/logInRouter');
 const applyMembershipRouter = require('./routes/applyMembershipRouter');
+const logOutRouter = require('./routes/logOutRouter');
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const User = require('./models/userModel');
@@ -76,6 +77,8 @@ app.get('/', (req, res) => {
 app.use('/sign-up', signUpRouter);
 
 app.use('/log-in', logInRouter);
+
+app.use('/log-out', logOutRouter);
 
 app.use('/apply-membership', applyMembershipRouter);
 
