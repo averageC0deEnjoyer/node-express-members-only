@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
+const User = require('../models/userModel');
 
 exports.apply_membership_get = asyncHandler(async (req, res, next) => {
   console.log(req.user);
@@ -18,6 +19,7 @@ exports.apply_membership_post = [
       req.body.member.toString() === process.env.MEMBERSHIP_CODE.toString()
     ) {
       req.user.membershipStatus = true;
+      await User.findByIdAndUpdate(req.user.id, { membershipStatus: true });
       res.redirect('/');
       console.log(req.user);
       return;

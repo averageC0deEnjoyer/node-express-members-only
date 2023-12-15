@@ -1,9 +1,13 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  a(href='/create-message') Create Message Here 
+  if user && user.membershipStatus === true
+    h1 Welcome Members!
+  else 
+    h1 Welcome Non-Members!
+  p Welcome to Message Board!
+  if user
+    a(href='/create-message') Create Message Here 
   if !user
     a(href='/sign-up') Sign Up Here
     |   
@@ -14,8 +18,12 @@ block content
     a(href='/apply-membership')   Become a Membership
   if user 
     a(href='/log-out')   Log Out
-  //- ul
-  //-   each message in messages
-  //-     li= message.title 
-  //-   else 
-  //-     p no message yet
+  ul
+    each message in messages
+      li= message.title 
+      p= message.text
+      if user && user.membershipStatus === true
+        p created by: #{message.createdBy.fullname}
+        p created at: #{message.createdAt}
+    else 
+      p no message yet

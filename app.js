@@ -9,9 +9,20 @@ const signUpRouter = require('./routes/signUpRouter');
 const logInRouter = require('./routes/logInRouter');
 const applyMembershipRouter = require('./routes/applyMembershipRouter');
 const logOutRouter = require('./routes/logOutRouter');
+const createMessageRouter = require('./routes/createMessageRouter');
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const User = require('./models/userModel');
+const Message = require('./models/messageModel');
+let allMessage;
+
+async function fetchMessage() {
+  allMessage = await Message.find()
+    .sort({ createdAt: -1 })
+    .populate('createdBy')
+    .exec();
+}
+fetchMessage();
 
 const mongoDb = process.env.MONGODB_URI;
 mongoose.connect(mongoDb);
@@ -58,7 +69,7 @@ passport.deserializeUser(async (id, done) => {
 
 app.use(
   session({
-    secret: 'catto', //later change to process.env
+    secret: process.env.SESSION_SECRET, //later change to process.env
     resave: false,
     saveUninitialized: true,
   })
@@ -70,8 +81,14 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-  res.render('index', { title: 'Members Only!', user: req.user });
+app.get('/', async (req, res) => {
+  //dont forget await here cause fetchmessage is asyncfunc
+  await fetchMessage();
+  res.render('index', {
+    title: 'Members Only!',
+    user: req.user,
+    messages: allMessage,
+  });
 });
 
 app.use('/sign-up', signUpRouter);
@@ -81,6 +98,8 @@ app.use('/log-in', logInRouter);
 app.use('/log-out', logOutRouter);
 
 app.use('/apply-membership', applyMembershipRouter);
+
+app.use('/create-message', createMessageRouter);
 
 //catch 404 and forward to error handler
 app.use((req, res, next) => {

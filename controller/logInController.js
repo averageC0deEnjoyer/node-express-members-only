@@ -4,7 +4,7 @@ const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 
-exports.log_in_get = asyncHandler((req, res, next) => {
+exports.log_in_get = asyncHandler(async (req, res, next) => {
   res.render('log-in-form', { title: 'Log-in Form' });
 });
 
