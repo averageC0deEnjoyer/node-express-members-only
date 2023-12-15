@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-require('mongoose-type-email');
 
 const Schema = mongoose.Schema;
 
@@ -19,8 +18,8 @@ const userSchema = new Schema({
       'Please fill a valid email address',
     ],
   },
-  password: { type: String, required: true, trim: true },
-  fullname: { type: String, required: true, trim: true },
+  password: { type: String, required: true, trim: true, minLength: 15 },
+  fullname: { type: String, required: true, trim: true, minLength: 2 },
   membershipStatus: { type: Boolean, default: false },
   adminStatus: { type: Boolean, default: false },
 });
