@@ -5,8 +5,8 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const createError = require('http-errors');
 const mongoose = require('mongoose');
+const signUpRouter = require('./routes/signUpRouter');
 require('dotenv').config();
-const signUpController = require('./controller/signUpController');
 
 const mongoDb = process.env.MONGODB_URI;
 mongoose.connect(mongoDb);
@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
   res.render('index', { title: 'Members Only!' });
 });
 
-app.use('/sign-up', signUpController);
+app.use('/sign-up', signUpRouter);
 
 //catch 404 and forward to error handler
 app.use((req, res, next) => {
