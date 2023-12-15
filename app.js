@@ -7,6 +7,7 @@ const createError = require('http-errors');
 const mongoose = require('mongoose');
 const signUpRouter = require('./routes/signUpRouter');
 const logInRouter = require('./routes/logInRouter');
+const applyMembershipRouter = require('./routes/applyMembershipRouter');
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const User = require('./models/userModel');
@@ -25,9 +26,6 @@ passport.use(
     { usernameField: 'email' }, // dont forget to change usernameField if its not username
     async (email, password, done) => {
       try {
-        console.log(email);
-        console.log(password);
-
         const user = await User.findOne({ email: email });
         if (!user) {
           return done(null, false, { message: 'incorrect email' });

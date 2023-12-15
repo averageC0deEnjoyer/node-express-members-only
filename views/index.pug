@@ -5,7 +5,8 @@ block content
   p Welcome to #{title}
   a(href='/sign-up') Sign Up Here
   |   
-  a(href='/log-in') Log In Here
+  if !user
+    a(href='/log-in') Log In Here
   |
   if user 
     a(href='/apply-membership')   Become a Membership
