@@ -8,6 +8,8 @@ const mongoose = require('mongoose');
 const signUpRouter = require('./routes/signUpRouter');
 const logInRouter = require('./routes/logInRouter');
 require('dotenv').config();
+const bcrypt = require('bcryptjs');
+const User = require('./models/userModel');
 
 const mongoDb = process.env.MONGODB_URI;
 mongoose.connect(mongoDb);
@@ -18,8 +20,54 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(express.json());
+passport.use(
+  new LocalStrategy(
+    { usernameField: 'email' }, // dont forget to change usernameField if its not username
+    async (email, password, done) => {
+      try {
+        console.log(email);
+        console.log(password);
+
+        const user = await User.findOne({ email: email });
+        if (!user) {
+          return done(null, false, { message: 'incorrect email' });
+        }
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+          return done(null, false, { message: 'incorrect password' });
+        }
+        return done(null, user); // dont forget here
+      } catch (err) {
+        return done(err);
+      }
+    }
+  )
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
+
+app.use(
+  session({
+    secret: 'catto', //later change to process.env
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -30,6 +78,8 @@ app.get('/', (req, res) => {
 app.use('/sign-up', signUpRouter);
 
 app.use('/log-in', logInRouter);
+
+app.use('/apply-membership', applyMembershipRouter);
 
 //catch 404 and forward to error handler
 app.use((req, res, next) => {

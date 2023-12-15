@@ -19,7 +19,7 @@ const userSchema = new Schema({
       'Please fill a valid email address',
     ],
   },
-  password: { type: String, required: true, trim: true, minLength: 5 },
+  password: { type: String, required: true, trim: true, minLength: 4 },
   fullname: { type: String, required: true, trim: true, minLength: 2 },
   membershipStatus: { type: Boolean, default: false },
   adminStatus: { type: Boolean, default: false },
