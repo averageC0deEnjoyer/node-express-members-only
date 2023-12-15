@@ -3,8 +3,10 @@ const path = require('path');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const createError = require('http-errors');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const signUpController = require('./controller/signUpController');
 
 const mongoDb = process.env.MONGODB_URI;
 mongoose.connect(mongoDb);
@@ -21,8 +23,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-  res.render('index');
+  res.render('index', { title: 'Members Only!' });
 });
+
+app.use('/sign-up', signUpController);
 
 //catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -38,3 +42,5 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.listen(3000);
