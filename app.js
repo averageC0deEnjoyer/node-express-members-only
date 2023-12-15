@@ -6,6 +6,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const createError = require('http-errors');
 const mongoose = require('mongoose');
 const signUpRouter = require('./routes/signUpRouter');
+const logInRouter = require('./routes/logInRouter');
 require('dotenv').config();
 
 const mongoDb = process.env.MONGODB_URI;
@@ -27,6 +28,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/sign-up', signUpRouter);
+
+app.use('/log-in', logInRouter);
 
 //catch 404 and forward to error handler
 app.use((req, res, next) => {
