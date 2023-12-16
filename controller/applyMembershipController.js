@@ -29,4 +29,4 @@ exports.apply_membership_post = [
     }
   }),
 ];
-//TODO, persist memberStatus data in DB
+//TODO, persist memberStatus data in DB --done

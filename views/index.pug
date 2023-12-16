@@ -7,19 +7,19 @@ block content
     h1 Welcome Non-Members!
   p Welcome to Message Board!
   if user
-    a(href='/create-message') Create Message Here 
+    a(href='/create-message') | Create Message Here 
   if !user
-    a(href='/sign-up') Sign Up Here
+    a(href='/sign-up') | Sign Up Here
     |   
   if !user
-    a(href='/log-in') Log In Here
+    a(href='/log-in') | Log In Here
   |
   if user && user.membershipStatus === false
-    a(href='/apply-membership')   Become a Membership
+    a(href='/apply-membership') |   Become a Membership
   if user && user.adminStatus === false
-    a(href='/admin')   Are you an Admin????
+    a(href='/admin') |  Are you an Admin????
   if user 
-    a(href='/log-out')   Log Out
+    a(href='/log-out')  | Log Out
   ul
     each message in messages
       li= message.title 
@@ -27,5 +27,7 @@ block content
       if user && user.membershipStatus === true
         p created by: #{message.createdBy.fullname}
         p created at: #{message.createdAt}
+      if user && user.adminStatus === true
+        a(href=message.delete_url) Delete Message?
     else 
       p no message yet

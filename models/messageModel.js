@@ -23,4 +23,8 @@ const messageSchema = new Schema(
   { timestamps: true }
 );
 
+messageSchema.virtual('delete_url').get(function () {
+  return `/admin/delete/${this._id}`;
+});
+
 module.exports = mongoose.model('Message', messageSchema);
