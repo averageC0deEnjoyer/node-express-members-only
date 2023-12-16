@@ -10,6 +10,7 @@ const logInRouter = require('./routes/logInRouter');
 const applyMembershipRouter = require('./routes/applyMembershipRouter');
 const logOutRouter = require('./routes/logOutRouter');
 const createMessageRouter = require('./routes/createMessageRouter');
+const verifyAdminRouter = require('./routes/verifyAdminRouter');
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const User = require('./models/userModel');
@@ -84,6 +85,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', async (req, res) => {
   //dont forget await here cause fetchmessage is asyncfunc
   await fetchMessage();
+  console.log(req.user);
   res.render('index', {
     title: 'Members Only!',
     user: req.user,
@@ -100,6 +102,8 @@ app.use('/log-out', logOutRouter);
 app.use('/apply-membership', applyMembershipRouter);
 
 app.use('/create-message', createMessageRouter);
+
+app.use('/admin', verifyAdminRouter);
 
 //catch 404 and forward to error handler
 app.use((req, res, next) => {

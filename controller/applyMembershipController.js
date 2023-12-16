@@ -18,7 +18,6 @@ exports.apply_membership_post = [
     } else if (
       req.body.member.toString() === process.env.MEMBERSHIP_CODE.toString()
     ) {
-      req.user.membershipStatus = true;
       await User.findByIdAndUpdate(req.user.id, { membershipStatus: true });
       res.redirect('/');
       console.log(req.user);
